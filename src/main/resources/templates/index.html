@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4"
+      xmlns:tr="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>COCOMO калькулятор</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"
+          integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://yastatic.net/jquery/3.3.1/jquery.js"></script>
+    <script src="https://unpkg.com/@popperjs/core@2/dist/umd/popper.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"
+            integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV"
+            crossorigin="anonymous"></script>
+    <style>
+        .custom-navbar {
+            margin-bottom: 20px;
+            background-color: #31373e;
+            height: 45px;
+        }
+
+        .custom-navbar a {
+            color: #82888b;
+        }
+
+        .custom-navbar a:hover {
+            color: #babcbe;
+            text-decoration: none;
+        }
+
+        .email {
+            color: #ffffff;
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .role {
+            color: #fff;
+            font-size: 18px;
+        }
+
+        .padding-left-zero {
+            padding-left: 0;
+        }
+
+        .padding-left-zero a {
+            height: 40px;
+        }
+
+        thead tr th {
+            font-size: 14px;
+        }
+
+        .ratio {
+            margin-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <!--    Начало навигационной панели слева     -->
+        <div class="col-2 padding-left-zero">
+            <div class="nav nav-pills flex-column" id="roleNavBtn" role="tablist">
+                <a class='block nav-link active' data-toggle='pill' href='#infoPanel'>
+                    <p class='text-left text-capitalize'>Информация</p>
+                </a>
+                <a class='block nav-link' data-toggle='pill' href='#basicPanel'>
+                    <p class='text-left text-capitalize'>Basic</p>
+                </a>
+                <a class='block nav-link' data-toggle='pill' href='#interPanel'>
+                    <p class='text-left text-capitalize'>Intermediate</p>
+                </a>
+            </div>
+        </div>
+        <!--    Конец левой навигационной панели    -->
+        <div class="col-10">
+            <div class="tab-content">
+                <div class="tab-pane active" id="infoPanel">
+                    <h1>Информация о приложении</h1>
+
+                    <h3>Приложение разработна в рамках выполнения лабораторной работы по дисциплине "Программная
+                        инженерия</h3>
+                    <h3>Использован язык программирования Java и JavaScript для обновления эллементов</h3>
+                    <h3>Выполнил работу Рочев Н.А., студент группы З-99э-1</h3>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="basicPanel">
+                    <br>
+                    <h5>Расчёт COCOMO Basic</h5>
+                    <br>
+
+                    <div class='form-group text-center'>
+                        <label><b>Сколько нужно написать кода</b></label>
+                        <h3 style="color: brown" id="errorLight"></h3>
+                        <input style="width: 20%; 	margin-right: auto; margin-left: auto;" type='number' id='sizeBasic' class='form-control'>
+                    </div>
+
+                    <div class='form-group text-center'>
+                        <label><b>Тип команды</b></label>
+                        <div>
+                            <th:block th:each="rol : ${typeLight}">
+                                <label th:for="${rol.name()}" th:text="${rol.getName()}"></label>
+                                <input class="ratio" th:type="radio" th:name="typeLight"
+                                       th:value="${rol.name()}"
+                                       th:attr="id=${rol.name()}"> </label>
+                            </th:block>
+                        </div>
+                    </div>
+                    <div class="form-group text-center">
+                        <button id='resultLightBtn' type='submit' class='btn btn-info btn-lg'>Посчитать</button>
+                    </div>
+
+                    <h3 id="resultLight"></h3>
+                </div>
+                <div role="tabpanel" class="tab-pane" id="interPanel">
+                    <br>
+                    <h5>Расчёт COCOMO Intermediate</h5>
+                    <br>
+
+                    <div class='form-group text-center'>
+                        <label><b>Сколько нужно написать кода</b></label>
+                        <h3 style="color: brown" id="errorHard"></h3>
+                        <input style="width: 20%; 	margin-right: auto; margin-left: auto;" type='number' id='sizeInter' class='form-control'>
+                    </div>
+
+                    <div class='form-group text-center'>
+                        <label><b>Тип команды</b></label>
+                        <div>
+                            <th:block th:each="rol : ${typeLight}">
+                                <label th:for="${rol.name()}" th:text="${rol.getName()}"></label>
+                                <input class="ratio" th:type="radio" th:name="typeHard" th:value="${rol.name()}" th:attr="id=${rol.name()}"> </label>
+                            </th:block>
+                        </div>
+
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th scope="col">Аттрибут</th>
+                                <th scope="col">Очень низкий</th>
+                                <th scope="col">Низкий</th>
+                                <th scope="col">Средний</th>
+                                <th scope="col">Высокий</th>
+                                <th scope="col">Очень высокий</th>
+                                <th scope="col">Критический</th>
+                            </tr>
+                            </thead>
+                            <tbody id="serverData">
+                            <th:block th:each="atr : ${attrs}">
+                                <tr>
+                                    <td th:text="${atr.getName()}"></td>
+                                    <td>
+                                        <input th:if="${atr.getV1() != 0}" class="ratio hard" th:type="radio" th:name="${atr.name()}" th:attr="id=${atr.getName()}" th:value="${atr.getV1()}"> </label>
+                                    </td>
+                                    <td>
+                                        <input th:if="${atr.getV2() != 0}" class="ratio hard" th:type="radio" th:name="${atr.name()}" th:attr="id=${atr.getName()}" th:value="${atr.getV2()}"> </label>
+                                    </td>
+                                    <td>
+                                        <input th:if="${atr.getV3() != 0}" class="ratio hard" th:type="radio" th:name="${atr.name()}" th:attr="id=${atr.getName()}" th:value="${atr.getV3()}"> </label>
+                                    </td>
+                                    <td>
+                                        <input th:if="${atr.getV4() != 0}" class="ratio hard" th:type="radio" th:name="${atr.name()}" th:attr="id=${atr.getName()}" th:value="${atr.getV4()}"> </label>
+                                    </td>
+                                    <td>
+                                        <input th:if="${atr.getV5() != 0}" class="ratio hard" th:type="radio" th:name="${atr.name()}" th:attr="id=${atr.getName()}" th:value="${atr.getV5()}"> </label>
+                                    </td>
+                                    <td>
+                                        <input th:if="${atr.getV6() != 0}" class="ratio hard" th:type="radio" th:name="${atr.name()}" th:attr="id=${atr.getName()}" th:value="${atr.getV6()}"> </label>
+                                    </td>
+                                <tr/>
+                            </th:block>
+                            </tbody>
+                        </table>
+
+                    </div>
+                    <div class="form-group text-center">
+                        <button id='resultHardBtn' type='submit' class='btn btn-info btn-lg'>Посчитать</button>
+                    </div>
+
+                    <h3 id="resultHard"></h3>
+                </div>
+            </div>
+        </div>
+</div>
+</div>
+
+<script>
+    $(function () {
+        $('#resultLightBtn').on("click", function () {
+            let request = {};
+
+              request.size = $("#sizeBasic").val();
+              request.projectTypeLight = $($('[name = "typeLight"]:checked')[0]).val();
+
+            if (request.size === "") {
+                $('#errorLight').text("Заполните кол-во строк кода")
+                return;
+            }
+
+            if (request.projectTypeLight == null) {
+                $('#errorLight').text("Заполните тип команды")
+                return;
+            }
+
+            $('#errorLight').empty();
+            fetch('http://localhost:8080/rest/light', {
+                method: "POST",
+                credentials: 'same-origin',
+                body: JSON.stringify(request),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }).then(response => response.text().then(v => {
+                $('#resultLight').text(v);
+                console.log(v);
+            }))
+        });
+
+        $('#resultHardBtn').on("click", function () {
+            let request = {};
+
+            request.size = $("#sizeInter").val();
+            request.projectTypeLight = $($('[name = "typeHard"]:checked')[0]).val();
+
+            if (request.size === "") {
+                $('#errorHard').text("Заполните кол-во строк кода")
+                return;
+            }
+
+            if (request.projectTypeLight == null) {
+                $('#errorHard').text("Заполните тип команды")
+                return;
+            }
+            let a = 1;
+            $('.hard:checked').each(function () {
+                a = a*$(this).val();
+                console.log(a);
+            })
+            request.eaf = a;
+
+            $('#errorHard').empty();
+            fetch('http://localhost:8080/rest/hard', {
+                method: "POST",
+                credentials: 'same-origin',
+                body: JSON.stringify(request),
+                headers: {
+                    'content-type': 'application/json'
+                }
+            }).then(response => response.text().then(v => {
+                $('#resultHard').text(v);
+                console.log(v);
+            }))
+        });
+
+    });
+</script>
+</body>
+</html>
