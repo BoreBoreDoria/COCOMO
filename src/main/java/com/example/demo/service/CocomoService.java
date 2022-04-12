@@ -22,6 +22,4 @@ public class CocomoService {
         return String.format("Расчёт закончен: PM = %s (трудоёмкость чел. х мес.) , " +
                 "TM = %s (время разработки в календарных месяцах) Разработчики: %s человек", pm.longValue(), tm.longValue(), h.longValue());
     }
-
-
 }

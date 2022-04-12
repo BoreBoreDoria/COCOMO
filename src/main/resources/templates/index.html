@@ -203,7 +203,7 @@
             }
 
             $('#errorLight').empty();
-            fetch('http://localhost:8080/rest/light', {
+            fetch('http://localhost/rest/light', {
                 method: "POST",
                 credentials: 'same-origin',
                 body: JSON.stringify(request),
@@ -239,7 +239,7 @@
             request.eaf = a;
 
             $('#errorHard').empty();
-            fetch('http://localhost:8080/rest/hard', {
+            fetch('http://localhost/rest/hard', {
                 method: "POST",
                 credentials: 'same-origin',
                 body: JSON.stringify(request),
