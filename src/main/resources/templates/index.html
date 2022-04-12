@@ -91,7 +91,7 @@
                     <br>
 
                     <div class='form-group text-center'>
-                        <label><b>Сколько нужно написать кода</b></label>
+                        <label><b>Сколько нужно написать кода в тысячах строк</b></label>
                         <h3 style="color: brown" id="errorLight"></h3>
                         <input style="width: 20%; 	margin-right: auto; margin-left: auto;" type='number' id='sizeBasic' class='form-control'>
                     </div>
@@ -119,7 +119,7 @@
                     <br>
 
                     <div class='form-group text-center'>
-                        <label><b>Сколько нужно написать кода</b></label>
+                        <label><b>Сколько нужно написать кода в тысячах строк</b></label>
                         <h3 style="color: brown" id="errorHard"></h3>
                         <input style="width: 20%; 	margin-right: auto; margin-left: auto;" type='number' id='sizeInter' class='form-control'>
                     </div>
@@ -203,7 +203,7 @@
             }
 
             $('#errorLight').empty();
-            fetch('http://localhost:8081/rest/light', {
+            fetch('http://localhost:8080/rest/light', {
                 method: "POST",
                 credentials: 'same-origin',
                 body: JSON.stringify(request),
@@ -239,7 +239,7 @@
             request.eaf = a;
 
             $('#errorHard').empty();
-            fetch('http://localhost:8081/rest/hard', {
+            fetch('http://localhost:8080/rest/hard', {
                 method: "POST",
                 credentials: 'same-origin',
                 body: JSON.stringify(request),
